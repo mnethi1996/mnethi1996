@@ -59,13 +59,13 @@ jobs:
           sudo apt-get update
           npm install -g api-catalog-cli@latest
 
-      - name: Publish API to Anypoint Exchange
-        env: 
-          ANYPOINT_USERNAME: ${{ secrets.ANYPOINT_USERNAME }} 
-          ANYPOINT_PASSWORD: ${{ secrets.ANYPOINT_PASSWORD }}
-          ANYPOINT_ORG_ID: ${{ secrets.ANYPOINT_ORGID }}
-        run: |
-          api-catalog publish-asset --organization="$ANYPOINT_ORG_ID" --username="$ANYPOINT_USERNAME" --password="$ANYPOINT_PASSWORD"
+    - name: Publish API to Anypoint Exchange
+      env: 
+        ANYPOINT_USERNAME: ${{ secrets.ANYPOINT_USERNAME }} 
+        ANYPOINT_PASSWORD: ${{ secrets.ANYPOINT_PASSWORD }}
+        ANYPOINT_ORG_ID: ${{ secrets.ANYPOINT_ORGID }}
+      run: |
+        api-catalog publish-asset --organization="$ANYPOINT_ORG_ID" --username="$ANYPOINT_USERNAME" --password="$ANYPOINT_PASSWORD"
 
     - name: Build with Maven
       run: mvn -B package --file pom.xml -DskipMunitTests
