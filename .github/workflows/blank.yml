@@ -24,6 +24,18 @@ jobs:
       with:
         distribution: 'zulu'
         java-version: 8
+    - name: Install api-catalog cli
+      run: |
+        sudo apt-get update
+        npm install -g api-catalog-cli@latest
+
+    - name: Publish API to Anypoint Exchange
+      env: 
+        ANYPOINT_USERNAME: ${{ secrets.ANYPOINT_USERNAME }} 
+        ANYPOINT_PASSWORD: ${{ secrets.ANYPOINT_PASSWORD }}
+        ANYPOINT_ORG_ID: ${{ secrets.ANYPOINT_ORGID }}
+      run: |
+        api-catalog publish-asset --organization="$ANYPOINT_ORG_ID" --username="$ANYPOINT_USERNAME" --password="$ANYPOINT_PASSWORD"
     - name: Test with Maven
       env:
         nexus_username: ${{ secrets.nexus_username }}
@@ -53,19 +65,7 @@ jobs:
       uses: actions/setup-java@v3
       with:
         distribution: 'zulu'
-        java-version: 8
-    - name: Install api-catalog cli
-      run: |
-        sudo apt-get update
-        npm install -g api-catalog-cli@latest
-
-    - name: Publish API to Anypoint Exchange
-      env: 
-        ANYPOINT_USERNAME: ${{ secrets.ANYPOINT_USERNAME }} 
-        ANYPOINT_PASSWORD: ${{ secrets.ANYPOINT_PASSWORD }}
-        ANYPOINT_ORG_ID: ${{ secrets.ANYPOINT_ORGID }}
-      run: |
-        api-catalog publish-asset --organization="$ANYPOINT_ORG_ID" --username="$ANYPOINT_USERNAME" --password="$ANYPOINT_PASSWORD"
+        java-version: 
 
     - name: Build with Maven
       run: mvn -B package --file pom.xml -DskipMunitTests
